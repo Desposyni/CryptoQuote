@@ -1,4 +1,4 @@
-#! usr/bin/python2.7
+#! /usr/bin/python
 # Happy B-Day Mom!
 import random
 import urllib2
