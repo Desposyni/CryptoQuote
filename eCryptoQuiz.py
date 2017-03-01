@@ -1,27 +1,22 @@
 #! /usr/bin/python
 # Happy B-Day Mom!
+import string
 import random
 import urllib2
 import os.path
 
 # a list of the alphabet
-alpha = ['A','B','C','D','E','F','G','H','I','J','K','L','M',
-         'N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-key = list(alpha)
-
-badshuffle = True # starts with a bad shuffle
-while badshuffle:
-    random.shuffle(key) # shuffles
-    for x in range(len(alpha)):
-        if key[x] != alpha[x]: # if they're different
-            badshuffle = False
-        else: # if a letter got mapped to itself
-            badshuffle = True
-            break # exits for-loop, enters while-loop again, so it can reshuffle
-
+alpha = list(string.ascii_uppercase)
+random.shuffle(alpha)
 code = dict()
 for x in range(len(alpha)):
-    code[alpha[x]] = key[x] # a shuffled alphabet dictionary
+    code[alpha[x]] = alpha[(x+1)%len(alpha)] # a shuffled alphabet dictionary
+
+cipher = open('cipher.txt', 'w')
+cipher.write("Left column is plaintext, and right column is ciphertext.\n")
+for k, v in sorted(code.items()):
+    cipher.write('%s -> %s\n' % (k, v)) # the cipher
+cipher.close()
 
 if os.path.exists('text.txt'):
     print("getting quote from text.txt")
@@ -46,15 +41,10 @@ else:
     answer = open('answer.txt', 'w')
     answer.write("The following quote was retrieved from:\n")
     answer.write('http://www.quotationspage.com/quote/%d.html\n\n' % quotepage)
-    answer.write(quote + "\n" + author)
+    plaintext = str.upper("\n\n" + quote + "\n\n\n\n- " + author)
+    answer.write(plaintext)
     answer.close()
-    text = (quote + "\n" + author)
-    plaintext = str.upper(text) # the text
-
-cipher = open('cipher.txt', 'w')
-cipher.write(str(code).replace(',', '\n')) # the cipher
-cipher.close()
-
+    
 ciphertext = open('ciphertext.txt', 'w')
 for letter in range(len(plaintext)):
     if plaintext[letter] in code:
