@@ -12,7 +12,7 @@ code = dict()
 for x in range(len(alpha)):
     code[alpha[x]] = alpha[(x+1)%len(alpha)] # a shuffled alphabet dictionary
 
-cipher = open('cipher.txt', 'w')
+cipher = open('cipher.html', 'w')
 cipher.write("Left column is plaintext, and right column is ciphertext.\n")
 for k, v in sorted(code.items()):
     cipher.write('%s -> %s\n' % (k, v)) # the cipher
@@ -38,14 +38,14 @@ else:
     if author == "\n":
         author = "*** :( ***"
 
-    answer = open('answer.txt', 'w')
+    answer = open('answer.html', 'w')
     answer.write("The following quote was retrieved from:\n")
     answer.write('http://www.quotationspage.com/quote/%d.html\n\n' % quotepage)
     plaintext = str.upper("\n\n" + quote + "\n\n\n\n- " + author)
     answer.write(plaintext)
     answer.close()
 
-ciphertext = open('ciphertext.txt', 'w')
+ciphertext = open('ciphertext.html', 'w')
 for letter in range(len(plaintext)):
     if plaintext[letter] in code:
         ciphertext.write(code[plaintext[letter]]) # the ciphertext
