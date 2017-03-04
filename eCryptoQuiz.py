@@ -33,7 +33,7 @@ else:
         quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
         if quote != "ERROR: No such quotation number.":
             badquote = False
-            
+
     author = html.split('"author"')[1].split('</a>')[0].split('>')[-1].replace("Search for", "")
     if author == "\n":
         author = "*** :( ***"
@@ -44,7 +44,7 @@ else:
     plaintext = str.upper("\n\n" + quote + "\n\n\n\n- " + author)
     answer.write(plaintext)
     answer.close()
-    
+
 ciphertext = open('ciphertext.txt', 'w')
 for letter in range(len(plaintext)):
     if plaintext[letter] in code:
