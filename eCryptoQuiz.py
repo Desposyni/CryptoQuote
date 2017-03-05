@@ -26,7 +26,7 @@ table, th, td {
     <h2>
         Left column is plaintext, and right column is ciphertext.
     </h2>
-<table style="width:100%, border:2px">
+<table style="width:100%">
 """)
 for k, v in sorted(code.items()):
     cipher.write('<tr><td>%s  <->  %s<br/></td>' % (k, v)) # the cipher
