@@ -13,9 +13,24 @@ for x in range(len(alpha)):
     code[alpha[x]] = alpha[(x+1)%len(alpha)] # a shuffled alphabet dictionary
 
 cipher = open('cipher.html', 'w')
-cipher.write("Left column is plaintext, and right column is ciphertext.\n")
+cipher.write("""
+<html>
+<head>
+<style>
+table, th, td {
+    border: 1px solid black;
+}
+</style>
+</head>
+<body>
+    <h2>
+        Left column is plaintext, and right column is ciphertext.
+    </h2>
+<table style="width:100%, border:2px">
+""")
 for k, v in sorted(code.items()):
-    cipher.write('%s -> %s\n' % (k, v)) # the cipher
+    cipher.write('<tr><td>%s  <->  %s<br/></td>' % (k, v)) # the cipher
+cipher.write('</tr></table></body></html>')
 cipher.close()
 
 if os.path.exists('text.txt'):
@@ -41,7 +56,7 @@ else:
     answer = open('answer.html', 'w')
     answer.write("The following quote was retrieved from:\n")
     answer.write('http://www.quotationspage.com/quote/%d.html\n\n' % quotepage)
-    plaintext = str.upper("\n\n" + quote + "\n\n\n\n- " + author)
+    plaintext = str.upper("\n\n", quote, "\n\n\n\n- ", author)
     answer.write(plaintext)
     answer.close()
 
