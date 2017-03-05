@@ -13,9 +13,9 @@ for x in range(len(alpha)):
     code[alpha[x]] = alpha[(x+1)%len(alpha)] # a shuffled alphabet dictionary
 
 cipher = open('cipher.html', 'w')
-cipher.write("Left column is plaintext, and right column is ciphertext.\n")
+cipher.write("<html><h1>Left column is plaintext, and right column is ciphertext.</h1><br/></html>")
 for k, v in sorted(code.items()):
-    cipher.write('%s  <->  %s\n' % (k, v)) # the cipher
+    cipher.write('%s  <->  %s<html><br/></html>' % (k, v)) # the cipher
 cipher.close()
 
 if os.path.exists('text.txt'):
