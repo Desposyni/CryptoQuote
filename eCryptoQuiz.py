@@ -29,7 +29,7 @@ table, th, td {
 <table style="width:100%">
 """)
 for k, v in sorted(code.items()):
-    cipher.write('<tr><td>%s  <->  %s<br/></td>' % (k, v)) # the cipher
+    cipher.write('<tr><td>%s  <=>  %s<br/></td>' % (k, v)) # the cipher
 cipher.write('</tr></table></body></html>')
 cipher.close()
 
