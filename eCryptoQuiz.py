@@ -17,20 +17,26 @@ cipher.write("""
 <html>
 <head>
 <style>
-table, th, td {
-    border: 1px solid black;
+body {
+    font-family: Monaco, monospace;
+    text-align: center;
+    }
+.columnsClass {
+    column-count: 2;
+    column-rule: 1px solid lightblue;
 }
+
 </style>
 </head>
 <body>
     <h2>
-        Left column is plaintext, and right column is ciphertext.
+        Ciphertext <=> Plaintext
     </h2>
-<table style="width:100%">
+<div class="columnsClass">
 """)
-for k, v in sorted(code.items()):
-    cipher.write('<tr><td>%s  <=>  %s<br/></td>' % (k, v)) # the cipher
-cipher.write('</tr></table></body></html>')
+for key, value in sorted(code.items(), key=lambda (k,v): (v,k)):
+    cipher.write('%s  <=>  %s<br/>' % (value, key)) # the cipher
+cipher.write('</div></body></html>')
 cipher.close()
 
 if os.path.exists('text.txt'):
