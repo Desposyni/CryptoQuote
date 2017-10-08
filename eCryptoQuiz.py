@@ -24,6 +24,9 @@ table, th, td {
 table {
     margin: auto;
 }
+td {
+    padding-left, padding-right: 2px;
+}
 h2 {
     text-align: center;
 }
@@ -31,12 +34,12 @@ h2 {
 </head>
 <body>
     <h2>
-        Left column is plaintext, and right column is ciphertext.
+        Left column is ciphertext, and right column is plaintext.
     </h2>
 <table>
 """)
-for k, v in sorted(code.items()):
-    cipher.write('<tr><td>%s  <=>  %s<br/></td>' % (k, v)) # the cipher
+for key, value in sorted(code.items(), key=lambda (k,v): (v,k)):
+    cipher.write('<tr><td>%s  <=>  %s<br/></td>' % (value, key)) # the cipher
 cipher.write('</tr></table></body></html>')
 cipher.close()
 
