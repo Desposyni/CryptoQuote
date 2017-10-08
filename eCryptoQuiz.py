@@ -17,31 +17,26 @@ cipher.write("""
 <html>
 <head>
 <style>
-table, th, td {
-    border: 1px solid black;
+body {
+    font-family: Monaco, monospace;
     text-align: center;
+    }
+.columnsClass {
+    column-count: 2;
+    column-rule: 1px solid lightblue;
 }
-table {
-    margin: auto;
-}
-td {
-    padding-left, padding-right: 2px;
-}
-h2 {
-    text-align: center;
-}
-tr:nth-child(even) {background-color: #f2f2f2}
+
 </style>
 </head>
 <body>
     <h2>
-        Left column is ciphertext; <br/>right column is plaintext.
+        Ciphertext <=> Plaintext
     </h2>
-<table>
+<div class="columnsClass">
 """)
 for key, value in sorted(code.items(), key=lambda (k,v): (v,k)):
-    cipher.write('<tr><td>%s  <=>  %s<br/></td>' % (value, key)) # the cipher
-cipher.write('</tr></table></body></html>')
+    cipher.write('%s  <=>  %s<br/>' % (value, key)) # the cipher
+cipher.write('</div></body></html>')
 cipher.close()
 
 if os.path.exists('text.txt'):
