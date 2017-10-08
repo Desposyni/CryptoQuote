@@ -30,11 +30,12 @@ td {
 h2 {
     text-align: center;
 }
+tr:nth-child(even) {background-color: #f2f2f2}
 </style>
 </head>
 <body>
     <h2>
-        Left column is ciphertext, and right column is plaintext.
+        Left column is ciphertext; <br/>right column is plaintext.
     </h2>
 <table>
 """)
