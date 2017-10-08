@@ -19,6 +19,13 @@ cipher.write("""
 <style>
 table, th, td {
     border: 1px solid black;
+    text-align: center;
+}
+table {
+    margin: auto;
+}
+h2 {
+    text-align: center;
 }
 </style>
 </head>
@@ -26,7 +33,7 @@ table, th, td {
     <h2>
         Left column is plaintext, and right column is ciphertext.
     </h2>
-<table style="width:100%">
+<table>
 """)
 for k, v in sorted(code.items()):
     cipher.write('<tr><td>%s  <=>  %s<br/></td>' % (k, v)) # the cipher
