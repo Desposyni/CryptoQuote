@@ -38,7 +38,7 @@ body {
 <div class="columnsClass">
 """)
 for key, value in sorted(code.items(), key=lambda (k,v): (v,k)):
-    cipher.write('%s  <=>  %s<br/>' % (value, key)) # the cipher
+    cipher.write(f'{value}  <=>  {key}<br/>') # the cipher
 cipher.write('</div></body></html>')
 cipher.close()
 
@@ -52,7 +52,7 @@ else:
     badquote = True
     while badquote:
         quotepage = random.randint(1, 5276)
-        response = urllib2.urlopen('http://www.quotationspage.com/quote/%d.html' % quotepage)
+        response = urllib2.urlopen(f'http://www.quotationspage.com/quote/{quotepage}.html')
         html = response.read()
         quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
         if quote != "ERROR: No such quotation number.":
@@ -64,8 +64,8 @@ else:
 
     answer = open('answer.html', 'w')
     answer.write("The following quote was retrieved from:\n")
-    answer.write('http://www.quotationspage.com/quote/%d.html\n\n' % quotepage)
-    plaintext = str.upper("\n\n" + quote + "\n\n\n\n- " + author)
+    answer.write(f'http://www.quotationspage.com/quote/{quotepage}.html\n\n')
+    plaintext = str.upper(f'\n\n{quote}\n\n\n\n- {author}')
     answer.write(plaintext)
     answer.close()
 
