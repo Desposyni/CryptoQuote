@@ -1,14 +1,17 @@
-#! /usr/bin/python
+#! /usr/bin/python3
 # Happy B-Day Mom!
 import string
 import random
 import urllib2
 import os.path
 
-# a list of the alphabet
+# create an alphabet list
 alpha = list(string.ascii_uppercase)
+# shuffle the alphabet list
 random.shuffle(alpha)
+# create an empty dictionary
 code = dict()
+
 for x in range(len(alpha)):
     code[alpha[x]] = alpha[(x+1)%len(alpha)] # a shuffled alphabet dictionary
 
