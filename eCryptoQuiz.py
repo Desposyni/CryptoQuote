@@ -2,18 +2,21 @@
 # Happy B-Day Mom!
 import string
 import random
-import urllib2
+from urllib.request import urlopen
 import os.path
+from pprint import pprint
 
 # create an alphabet list
 alpha = list(string.ascii_uppercase)
 # shuffle the alphabet list
 random.shuffle(alpha)
 # create an empty dictionary
-code = dict()
+encrypt = {}
+decrypt = {}
 
-for x in range(len(alpha)):
-    code[alpha[x]] = alpha[(x+1)%len(alpha)] # a shuffled alphabet dictionary
+for index, letter in enumerate(alpha):
+    encrypt[letter] = alpha[index-1]
+    decrypt[alpha[index-1]] = letter
 
 cipher = open('cipher.html', 'w')
 cipher.write("""
@@ -37,8 +40,8 @@ body {
     </h2>
 <div class="columnsClass">
 """)
-for key, value in sorted(code.items(), key=lambda (k,v): (v,k)):
-    cipher.write(f'{value}  <=>  {key}<br/>') # the cipher
+for key, value in sorted(decrypt.items()):
+    cipher.write(f'{key}  <=>  {value}<br/>') # the cipher
 cipher.write('</div></body></html>')
 cipher.close()
 
@@ -52,11 +55,11 @@ else:
     badquote = True
     while badquote:
         quotepage = random.randint(1, 5276)
-        response = urllib2.urlopen(f'http://www.quotationspage.com/quote/{quotepage}.html')
-        html = response.read()
-        quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
-        if quote != "ERROR: No such quotation number.":
-            badquote = False
+        with urlopen(f'http://www.quotationspage.com/quote/{quotepage}.html') as response:
+            html = str(response.read())
+            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
+            if quote != "ERROR: No such quotation number.":
+                badquote = False
 
     author = html.split('"author"')[1].split('</a>')[0].split('>')[-1].replace("Search for", "")
     if author == "\n":
@@ -64,15 +67,15 @@ else:
 
     answer = open('answer.html', 'w')
     answer.write("The following quote was retrieved from:\n")
-    answer.write(f'http://www.quotationspage.com/quote/{quotepage}.html\n\n')
+    answer.write(f'\nhttp://www.quotationspage.com/quote/{quotepage}.html\n\n')
     plaintext = str.upper(f'\n\n{quote}\n\n\n\n- {author}')
     answer.write(plaintext)
     answer.close()
 
 ciphertext = open('ciphertext.html', 'w')
 for letter in range(len(plaintext)):
-    if plaintext[letter] in code:
-        ciphertext.write(code[plaintext[letter]]) # the ciphertext
+    if plaintext[letter] in encrypt:
+        ciphertext.write(encrypt[plaintext[letter]]) # the ciphertext
 
     else: ciphertext.write(plaintext[letter]) # the punct/space
 ciphertext.close()
