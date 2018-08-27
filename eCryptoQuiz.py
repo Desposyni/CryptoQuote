@@ -67,8 +67,8 @@ else:
 
     answer = open('answer.html', 'w')
     answer.write("The following quote was retrieved from:\n")
-    answer.write(f'\nhttp://www.quotationspage.com/quote/{quotepage}.html\n\n')
-    plaintext = str.upper(f'\n\n{quote}\n\n\n\n- {author}')
+    answer.write(f'<a href="http://www.quotationspage.com/quote/{quotepage}.html">www.quotationspage.com</a>')
+    plaintext = str.upper(f'<br/>{quote} - {author}')
     answer.write(plaintext)
     answer.close()
 
