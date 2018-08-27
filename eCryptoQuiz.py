@@ -66,7 +66,7 @@ else:
         author = "*** :( ***"
 
     answer = open('answer.html', 'w')
-    answer.write("The following quote was retrieved from:\n")
+    answer.write("The following quote was retrieved from: ")
     answer.write(f'<a href="http://www.quotationspage.com/quote/{quotepage}.html">www.quotationspage.com</a>')
     plaintext = str.upper(f'<br/>{quote} - {author}')
     answer.write(plaintext)
@@ -76,6 +76,6 @@ ciphertext = open('ciphertext.html', 'w')
 for letter in range(len(plaintext)):
     if plaintext[letter] in encrypt:
         ciphertext.write(encrypt[plaintext[letter]]) # the ciphertext
-
+    elif plaintext[letter] == '\\': ciphertext.write('')
     else: ciphertext.write(plaintext[letter]) # the punct/space
 ciphertext.close()
