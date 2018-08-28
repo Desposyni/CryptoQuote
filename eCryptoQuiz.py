@@ -22,17 +22,8 @@ cipher = open('cipher.html', 'w')
 cipher.write("""
 <html>
 <head>
-<style>
-body {
-    font-family: Monaco, monospace;
-    text-align: center;
-    }
-.columnsClass {
-    column-count: 2;
-    column-rule: 1px solid lightblue;
-}
-
-</style>
+<link rel="stylesheet" href="styles.css">
+<title>eCryptoQuiz</title>
 </head>
 <body>
     <h2>
