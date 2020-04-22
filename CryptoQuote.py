@@ -37,7 +37,6 @@ def get_quote():
 
 
 class CryptoQuote:
-    alpha = list(ascii_uppercase)  # create an alphabet list
 
     def __init__(self):
         self.encrypt = get_cipher()
