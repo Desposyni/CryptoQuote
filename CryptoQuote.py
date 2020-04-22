@@ -44,7 +44,7 @@ class CryptoQuote:
         self.quote_page, self.quote, self.author = get_quote()
 
     def encipher(self, text):
-        return ''.join([self.encrypt[letter] if letter in self.encrypt else letter for letter in text if letter != '\\'])
+        return ''.join([self.encrypt[c] if c in self.encrypt else c for c in text if c != '\\'])
 
 
 def main():
