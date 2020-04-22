@@ -1,72 +1,44 @@
 #! /usr/bin/python3
 # Happy B-Day Mom!
-import string
-import random
+from string import ascii_uppercase
+from random import shuffle, randint
 from urllib.request import urlopen
-import os.path
-from pprint import pprint
 
-# create an alphabet list
-alpha = list(string.ascii_uppercase)
-# shuffle the alphabet list
-random.shuffle(alpha)
-# create an empty dictionary
-encrypt = {}
-decrypt = {}
 
-for index, letter in enumerate(alpha):
-    encrypt[letter] = alpha[index-1]
-    decrypt[alpha[index-1]] = letter
+def get_cipher():
+    alpha = list(ascii_uppercase)
+    shuffle(alpha)  # shuffle the alphabet list
+    encrypt = {}  # create empty dicts to hold ciphers
+    for index, character in enumerate(alpha):
+        encrypt[character] = alpha[index - 1]
+    return encrypt
 
-cipher = open('cipher.html', 'w')
-cipher.write("""
-<html>
-<head>
-<link rel="stylesheet" href="styles.css">
-<title>eCryptoQuiz</title>
-</head>
-<body>
-    <h2>
-        Ciphertext <=> Plaintext
-    </h2>
-<div class="columnsClass">
-""")
-for key, value in sorted(decrypt.items()):
-    cipher.write(f'{key}  <=>  {value}<br/>') # the cipher
-cipher.write('</div></body></html>')
-cipher.close()
 
-if os.path.exists('text.txt'):
-    print("getting quote from text.txt")
-    text = open('text.txt')
-    plaintext = str.upper(text.read()) # the text
-    text.close()
-else:
-    print("...getting a quote from the web...")
-    badquote = True
-    while badquote:
-        quotepage = random.randint(1, 5276)
-        with urlopen(f'http://www.quotationspage.com/quote/{quotepage}.html') as response:
+def get_quote():
+    quote_page = 1
+    quote = ""
+    bad_quote = True
+    while bad_quote:
+        quote_page = randint(1, 5276)
+        with urlopen(f'http://www.quotationspage.com/quote/{quote_page}.html') as response:
             html = str(response.read())
             quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
             if quote != "ERROR: No such quotation number.":
-                badquote = False
+                bad_quote = False
 
     author = html.split('"author"')[1].split('</a>')[0].split('>')[-1].replace("Search for", "")
     if author == "\n":
         author = "*** :( ***"
 
-    answer = open('answer.html', 'w')
-    answer.write("The following quote was retrieved from: ")
-    answer.write(f'<a href="http://www.quotationspage.com/quote/{quotepage}.html">www.quotationspage.com</a>')
-    plaintext = str.upper(f'<br/>{quote} - {author}')
-    answer.write(plaintext)
-    answer.close()
+    return [quote_page, quote, author]
 
-ciphertext = open('ciphertext.html', 'w')
-for letter in range(len(plaintext)):
-    if plaintext[letter] in encrypt:
-        ciphertext.write(encrypt[plaintext[letter]]) # the ciphertext
-    elif plaintext[letter] == '\\': ciphertext.write('')
-    else: ciphertext.write(plaintext[letter]) # the punct/space
-ciphertext.close()
+
+class CryptoQuote:
+    alpha = list(ascii_uppercase)  # create an alphabet list
+
+    def __init__(self):
+        self.encrypt = get_cipher()
+        self.quote_page, self.quote, self.author = get_quote()
+
+    def encipher(self, text):
+        return [self.encrypt[letter] if letter in self.encrypt else letter for letter in text if letter != '\\']
