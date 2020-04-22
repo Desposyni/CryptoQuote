@@ -25,7 +25,7 @@ def get_quote():
         quote_page = str(randint(1, 42500))
         with urlopen(f'http://www.quotationspage.com/quote/{quote_page}.html') as response:
             html = str(response.read())
-            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
+            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n').replace('\\', '')
             if quote != "ERROR: No such quotation number.":
                 bad_quote = False
 
@@ -43,7 +43,7 @@ class CryptoQuote:
         self.quote_page, self.quote, self.author = get_quote()
 
     def encipher(self, text):
-        return ''.join([self.encrypt[c] if c in self.encrypt else c for c in text if c != '\\'])
+        return ''.join([self.encrypt[c] if c in self.encrypt else c for c in text if c not in '\\'])
 
 
 def main():
@@ -53,7 +53,7 @@ def main():
     for e, d in sorted(q.encrypt.items()):
         print(f'{e} <=> {d}')
 
-    print(f'Quote Page = {q.quote_page}')
+    print(f'Quote Page = http://www.quotationspage.com/quote/{q.quote_page}.html')
     print(f'{q.quote} - {q.author}')
     print(f'{q.encipher(q.quote)} - {q.encipher(q.author)}')
 
