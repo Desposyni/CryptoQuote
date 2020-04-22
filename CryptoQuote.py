@@ -22,7 +22,7 @@ def get_quote():
     bad_quote = True
 
     while bad_quote:
-        quote_page = str(randint(1, 5276))
+        quote_page = str(randint(1, 42500))
         with urlopen(f'http://www.quotationspage.com/quote/{quote_page}.html') as response:
             html = str(response.read())
             quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
