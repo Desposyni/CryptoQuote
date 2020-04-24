@@ -24,7 +24,7 @@ def get_quote():
     while bad_quote:
         page = str(randint(1, 42500))
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
-            html = str(response.read())
+            html = response.read().decode('utf-8')
             quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n').replace('\\', '')
             bad_quote = True if quote == "ERROR: No such quotation number." else False
 
@@ -43,15 +43,28 @@ def main():
     cipher = get_cipher()
     page, quote, author = get_quote()
 
+    def word_wrap(text, wrap=80):
+        words = []
+        for word in text.split():
+            if len(' '.join(words)) + len(word) < wrap:
+                words.append(word)
+            else:
+                print(' '.join(words))
+                words = [word]
+        else:
+            print(' '.join(words))
+
     for k, v in sorted(cipher.items()):
         print(f'{k}:{v}', end='')
         print(' , ', end='') if k not in ['M', 'Z'] else print('\n')
 
     print(f'http://www.quotationspage.com/quote/{page}.html')
-    print(f'{quote}')
-    print(f'{author:>{len(quote)}}')
-    print(f'{encipher(cipher, quote)}')
-    print(f'{encipher(cipher, author):>{len(quote)}}')
+
+    word_wrap(quote)
+    print(f'{author:>{len(quote) if len(quote) < 80 else 80}}')
+    print()
+    word_wrap(encipher(cipher, quote))
+    print(f'{encipher(cipher, author):>{len(quote) if len(quote) < 80 else 80}}')
 
 
 if __name__ == '__main__':
