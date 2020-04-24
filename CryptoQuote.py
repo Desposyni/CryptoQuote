@@ -17,15 +17,23 @@ def get_cipher():
 
 
 def get_quote(page=0):
-    quote = ''
+    page = str(page)
     error = "ERROR: No such quotation number."
-    while quote in error:
-        page = str(randint(1, 42500)) if quote in error or page == 0 else str(page)
+    quote = str(error)
+    while quote == error:
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
-            html = response.read().decode('utf-8')
-            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n').replace('\\', '')
+            html = response.read().decode('utf-8', errors='replace')
+            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n')
+        if quote == error:
+            page = str(randint(1, 42500))
+        if len(quote) > 586:  # check if quote is too long to fit on 80x24 console
+            quote = str(error)
+            page = str(randint(1, 42500))
 
-    author = html.split('"author"')[1].split('</a>')[0].split('>')[-1].replace("Search for", "")
+    author = html.split('"author"')[1]
+    author = author.split('<b>')[1].split('</b>')[0]
+    author = author.split('</a>')[0].split('>')[-1]
+    author = author.replace("Search for", "")
     if author == "\n":
         author = "*** :( ***"
 
@@ -38,7 +46,7 @@ def encipher(cipher, text):
 
 def main():
     cipher = get_cipher()
-    page, quote, author = get_quote()
+    page, quote, author = get_quote(40351)
 
     def word_wrap(text, wrap=80):
         words = []
