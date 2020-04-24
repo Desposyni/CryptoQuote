@@ -8,54 +8,63 @@ from urllib.request import urlopen
 def get_cipher():
     alpha = list(ascii_uppercase)
     shuffle(alpha)  # shuffle the alphabet list
-    encrypt = {}  # create empty dicts to hold ciphers
+    cipher = {}  # create empty dict to hold cipher
 
-    for index, character in enumerate(alpha):
-        encrypt[character] = alpha[index - 1]
+    for i, c in enumerate(alpha):
+        cipher[c] = alpha[i - 1]
 
-    return encrypt
+    return cipher
 
 
 def get_quote():
-    quote_page = 1
+    page = 1
     quote = ""
     bad_quote = True
 
     while bad_quote:
-        quote_page = str(randint(1, 42500))
-        with urlopen(f'http://www.quotationspage.com/quote/{quote_page}.html') as response:
-            html = str(response.read())
+        page = str(randint(1, 42500))
+        with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
+            html = response.read().decode('utf-8')
             quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n').replace('\\', '')
-            if quote != "ERROR: No such quotation number.":
-                bad_quote = False
+            bad_quote = True if quote == "ERROR: No such quotation number." else False
 
     author = html.split('"author"')[1].split('</a>')[0].split('>')[-1].replace("Search for", "")
     if author == "\n":
         author = "*** :( ***"
 
-    return map(str.upper, [quote_page, quote, author])
+    return map(str.upper, [page, quote, author])
 
 
-class CryptoQuote:
-
-    def __init__(self):
-        self.encrypt = get_cipher()
-        self.quote_page, self.quote, self.author = get_quote()
-
-    def encipher(self, text):
-        return ''.join([self.encrypt[c] if c in self.encrypt else c for c in text if c not in '\\'])
+def encipher(cipher, text):
+    return ''.join([cipher[c] if c in cipher else c for c in text if c not in '\\'])
 
 
 def main():
-    q = CryptoQuote()
+    cipher = get_cipher()
+    page, quote, author = get_quote()
 
-    print('Cipher')
-    for e, d in sorted(q.encrypt.items()):
-        print(f'{e} <=> {d}')
+    def word_wrap(text, wrap=80):
+        words = []
+        for word in text.split():
+            if len(' '.join(words)) + len(word) < wrap:
+                words.append(word)
+            else:
+                print(' '.join(words))
+                words = [word]
+        else:
+            print(' '.join(words))
 
-    print(f'Quote Page = http://www.quotationspage.com/quote/{q.quote_page}.html')
-    print(f'{q.quote} - {q.author}')
-    print(f'{q.encipher(q.quote)} - {q.encipher(q.author)}')
+    for k, v in sorted(cipher.items()):
+        print(f'{k}:{v}', end='')
+        print(' , ', end='') if k not in ['M', 'Z'] else print('\n')
+
+    print(f'http://www.quotationspage.com/quote/{page}.html')
+
+    word_wrap(quote)
+    print(f'{author:>{len(quote) if len(quote) < 80 else 80}}')
+    print()
+    word_wrap(encipher(cipher, quote))
+    print(f'{encipher(cipher, author):>{len(quote) if len(quote) < 80 else 80}}')
 
 
 if __name__ == '__main__':
