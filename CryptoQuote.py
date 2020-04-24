@@ -36,7 +36,7 @@ def get_quote():
 
 
 def encipher(cipher, text):
-    return ''.join([cipher[c] if c in cipher else c for c in text if c not in '\\'])
+    return ''.join([cipher[c] if c in cipher else c for c in text])
 
 
 def main():
