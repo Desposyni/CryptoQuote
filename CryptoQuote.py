@@ -17,20 +17,19 @@ def get_cipher():
 
 
 def get_quote(page=0):
-    bad_quote = True
     quote = ''
-    while bad_quote:
-        page = str(randint(1, 42500)) if page == '0' else str(page)
+    error = "ERROR: No such quotation number."
+    while quote in error:
+        page = str(randint(1, 42500)) if quote in error or page == 0 else str(page)
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
             html = response.read().decode('utf-8')
             quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n').replace('\\', '')
-            bad_quote = True if quote == "ERROR: No such quotation number." else False
 
     author = html.split('"author"')[1].split('</a>')[0].split('>')[-1].replace("Search for", "")
     if author == "\n":
         author = "*** :( ***"
 
-    return map(str.upper, [page, quote, author])
+    return map(str.upper, (page, quote, author))
 
 
 def encipher(cipher, text):
@@ -39,7 +38,7 @@ def encipher(cipher, text):
 
 def main():
     cipher = get_cipher()
-    page, quote, author = get_quote(32571)
+    page, quote, author = get_quote()
 
     def word_wrap(text, wrap=80):
         words = []
@@ -54,7 +53,7 @@ def main():
 
     for k, v in sorted(cipher.items()):
         print(f'{k}:{v}', end='')
-        print(' , ', end='') if k not in ['M', 'Z'] else print('\n')
+        print(' , ', end='') if k not in ['M', 'Z'] else print()
 
     print(f'http://www.quotationspage.com/quote/{page}.html')
 
