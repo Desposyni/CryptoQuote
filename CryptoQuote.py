@@ -16,13 +16,11 @@ def get_cipher():
     return cipher
 
 
-def get_quote():
-    page = 1
-    quote = ""
+def get_quote(page=0):
     bad_quote = True
-
+    quote = ''
     while bad_quote:
-        page = str(randint(1, 42500))
+        page = str(randint(1, 42500)) if page == '0' else str(page)
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
             html = response.read().decode('utf-8')
             quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '\n').replace('\\', '')
@@ -41,7 +39,7 @@ def encipher(cipher, text):
 
 def main():
     cipher = get_cipher()
-    page, quote, author = get_quote()
+    page, quote, author = get_quote(32571)
 
     def word_wrap(text, wrap=80):
         words = []
