@@ -22,11 +22,20 @@ def get_quote(page=0):
     quote = str(error)
     while quote == error:
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
-            html = response.read().decode('utf-8', errors='replace')
-            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '')
+            html = str(response.read())
+            iso_to_utf = {'\\x92': "'", '\\x97': '-'}
+            for iso, utf in iso_to_utf.items():
+                html = html.replace(iso, utf)
+            html = bytes(html, 'iso8859-1').decode('utf-8', errors='replace')
+
+            quote = html.split('<dt>')[1].split('</dt>')[0]
+            bad_chars = ('<br>', '\\')
+            for char in bad_chars:
+                quote = quote.replace(char, '')
+
         if quote == error:
             page = str(randint(1, 42500))
-        if len(quote) > 586:  # check if quote is too long to fit on 80x24 console
+        if len(quote) > 500:  # check if quote is too long
             quote = str(error)
             page = str(randint(1, 42500))
 
@@ -43,7 +52,7 @@ def encipher(cipher, text):
 
 def main():
     cipher = get_cipher()
-    page, quote, author = get_quote(34949)
+    page, quote, author = get_quote()
 
     def word_wrap(text, wrap=80):
         words = []
