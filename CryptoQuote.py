@@ -23,7 +23,7 @@ def get_quote(page=0):
     while quote == error:
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
             html = response.read().decode('utf-8', errors='replace')
-            quote = html.split('<dt>')[1].split('</dt>')[0]
+            quote = html.split('<dt>')[1].split('</dt>')[0].replace('<br>', '')
         if quote == error:
             page = str(randint(1, 42500))
         if len(quote) > 586:  # check if quote is too long to fit on 80x24 console
@@ -43,7 +43,7 @@ def encipher(cipher, text):
 
 def main():
     cipher = get_cipher()
-    page, quote, author = get_quote()
+    page, quote, author = get_quote(34949)
 
     def word_wrap(text, wrap=80):
         words = []
