@@ -72,10 +72,10 @@ def main():
     print(f'http://www.quotationspage.com/quote/{page}.html')
 
     word_wrap(quote)
-    print(f'{author:>{len(quote) if len(quote) < 80 else 80}}')
+    print(f'{author:>{len(quote) if len(quote) < 70 else 70}}')
     print()
     word_wrap(encipher(cipher, quote))
-    print(f'{encipher(cipher, author):>{len(quote) if len(quote) < 80 else 80}}')
+    print(f'{encipher(cipher, author):>{len(quote) if len(quote) < 70 else 70}}')
 
 
 if __name__ == '__main__':
