@@ -23,7 +23,8 @@ def get_quote(page=0):
     while quote == error:
         with urlopen(f'http://www.quotationspage.com/quote/{page}.html') as response:
             html = str(response.read())
-            iso_to_utf = {'\\x92': "'", '\\x97': '-'}
+
+            iso_to_utf = {'\\x92': "'", '\\x97': '-', '\\x91': "'"}
             for iso, utf in iso_to_utf.items():
                 html = html.replace(iso, utf)
             html = bytes(html, 'iso8859-1').decode('utf-8', errors='replace')
