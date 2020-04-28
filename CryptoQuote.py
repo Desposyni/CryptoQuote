@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/local/bin/python3
 # Happy B-Day Mom!
 from string import ascii_uppercase
 from random import shuffle, randint
