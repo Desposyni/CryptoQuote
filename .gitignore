@@ -1,6 +1,9 @@
+# ignore everything
+*
 
-answer\.html
-
-cipher\.html
-
-ciphertext\.html
+# allow code
+! __init__.py
+! CryptoQuote.py
+! LICENSE
+! README.md
+! .gitignore
